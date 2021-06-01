@@ -9,11 +9,16 @@ const blogRoutes = require("./routes/blogRoutes");
 const config = require("./config");
 
 //Connect to MongoDB using Mongoose
-const dbURI = `mongodb+srv://${config.db.username}:${config.db.password}@cluster0.yqzc8.mongodb.net/node-tuts?retryWrites=true&w=majority`;
-mongoose.connect(dbURI,{useNewUrlParser:true, useUnifiedTopology:true})
-    .then((result)=>app.listen(8080,()=>console.log("Listening at port 8080")))
-    .catch((err)=>console.log(err));
-
+(async () =>{
+    const dbURI = `mongodb+srv://${config.db.username}:${config.db.password}@cluster0.yqzc8.mongodb.net/node-tuts?retryWrites=true&w=majority`;
+    try{
+        //WILL wait first to see if we can connect to DB, else log error
+        await mongoose.connect(dbURI,{useNewUrlParser:true, useUnifiedTopology:true})
+        app.listen(config.port,()=>console.log(`Listening at port ${config.port}`));
+    }catch (err){
+        console.log(err);
+    }
+})()
 
 //set view engine
 app.set("views",path.join(__dirname,"views"));
@@ -39,7 +44,7 @@ app.use(express.urlencoded({extended:true}));
 //blog routes
 app.use("/blogs",blogRoutes);
 
-
+//if user go to view that doesn't exist
 app.use((req,res)=>{
     res.statusCode = 404;
     res.render('404',{title:"404"});
