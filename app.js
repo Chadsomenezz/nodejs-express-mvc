@@ -6,10 +6,10 @@ const path = require("path")
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const blogRoutes = require("./routes/blogRoutes");
-
+const config = require("./config");
 
 //Connect to MongoDB using Mongoose
-const dbURI = `mongodb+srv://chad:1234@cluster0.yqzc8.mongodb.net/node-tuts?retryWrites=true&w=majority`;
+const dbURI = `mongodb+srv://${config.db.username}:${config.db.password}@cluster0.yqzc8.mongodb.net/node-tuts?retryWrites=true&w=majority`;
 mongoose.connect(dbURI,{useNewUrlParser:true, useUnifiedTopology:true})
     .then((result)=>app.listen(8080,()=>console.log("Listening at port 8080")))
     .catch((err)=>console.log(err));
