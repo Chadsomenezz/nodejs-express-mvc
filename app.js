@@ -47,5 +47,5 @@ app.use("/blogs",blogRoutes);
 //if user go to view that doesn't exist
 app.use((req,res)=>{
     res.statusCode = 404;
-    res.render('404',{title:"404"});
+    res.render('404',{title:"Page not found"});
 })
